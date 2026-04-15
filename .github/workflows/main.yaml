@@ -1,0 +1,35 @@
+name: Deploy Ortho certificate Website to E2E
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to E2E Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.E2E_HOST }}
+          username: ${{ secrets.E2E_USER }}
+          key: ${{ secrets.E2E_SSH_KEY }}
+          port: 7022
+          script: |
+            cd /root/workspace || exit 1
+
+            if [ ! -d "Certificate_Ortho" ]; then
+              git clone git@github.com:Hi-ideals/Certificate_Ortho.git Certificate_Ortho
+            fi
+
+            cd Certificate_Ortho
+            git pull origin main
+
+            docker-compose down || true
+            docker-compose up -d --build
+            docker system prune -a --volumes -f
