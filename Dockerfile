@@ -5,6 +5,6 @@ RUN wget -O mysql-connector-java-5.1.29.tar.gz https://downloads.mysql.com/archi
     tar -xzvf mysql-connector-java-5.1.29.tar.gz && \
     mv mysql-connector-java-5.1.29/mysql-connector-java-5.1.29-bin.jar /usr/local/tomcat/lib/ && \
     rm -rf mysql-connector-java-5.1.29 mysql-connector-java-5.1.29.tar.gz
-RUN apt-get update && \
-    apt-get install -y default-mysql-client
+# RUN apt-get update && \
+#     apt-get install -y default-mysql-client
 EXPOSE 8080
